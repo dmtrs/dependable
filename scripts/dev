@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -e
+set -x
+which poetry
+poetry run pre-commit run --all
+poetry run ptw -- --mypy tests/ --cov=depends --cov-report=term-missing:skip-covered --cov-report=html

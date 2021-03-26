@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-set -e
-set -x
-
-ptw -- --mypy --cov=depends --cov=tests --cov-report=html tests
