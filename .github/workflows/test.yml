@@ -26,8 +26,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install Poetry
         run: pip install poetry
+      - name: Configure Poetry
+        run: poetry config virtualenvs.create false
       - name: Install dependencies
-        run: poetry install
+        run: poetry install --no-root
       - name: Backport 3.6
         if: ${{ matrix.python-version == 3.6 }}
         run: poetry add async-exit-stack async-generator

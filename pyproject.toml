@@ -39,6 +39,8 @@ pre-commit = "^2.9.3"
 mypy = "^0.790"
 pytest-mypy = "^0.8.1"
 pytest-watch = "^4.2.0"
+async-exit-stack = "^1.0.1"
+async_generator = "^1.10"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

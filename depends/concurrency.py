@@ -15,7 +15,7 @@ def _fake_asynccontextmanager(func: Callable[..., Any]) -> Callable[..., Any]:
 
 
 try:
-    from contextlib import asynccontextmanager as asynccontextmanager
+    from contextlib import asynccontextmanager as asynccontextmanager  # type: ignore
 except ImportError:
     try:
         from async_generator import (  # type: ignore  # isort: skip
@@ -26,7 +26,7 @@ except ImportError:
 
 
 try:
-    from contextlib import AsyncExitStack as AsyncExitStack
+    from contextlib import AsyncExitStack as AsyncExitStack  # type: ignore
 except ImportError:
     try:
         from async_exit_stack import AsyncExitStack as AsyncExitStack  # type: ignore
