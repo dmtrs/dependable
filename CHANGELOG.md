@@ -9,4 +9,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Adds class Depends
+* Adds decorator `depends.dependable`
+* Adds class `depends.Depends`

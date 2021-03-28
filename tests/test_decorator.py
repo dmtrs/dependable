@@ -6,6 +6,12 @@ T = TypeVar("T")
 
 
 class TestDependable:
+    def test_assertion(self) -> None:
+        try:
+            dependable(1)  # type: ignore
+        except AssertionError:
+            assert True
+
     def test_empty(self) -> None:
         @dependable
         def empty() -> Any:
