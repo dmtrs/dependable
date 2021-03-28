@@ -1,32 +1,14 @@
 import inspect
-from contextlib import contextmanager
+from typing import Any, Callable, Dict, List, MutableMapping, Optional, Tuple, cast
 
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    List,
-    Mapping,
-    Optional,
-    Sequence,
-    Tuple,
-    Type,
-    Union,
-    cast,
-    MutableMapping,
-)
-from pydantic.typing import ForwardRef, evaluate_forwardref
 from pydantic.error_wrappers import ErrorWrapper
+from pydantic.typing import ForwardRef, evaluate_forwardref
 
+from .concurrency import check_dependency_contextmanagers, run_in_threadpool
 from .core import Dependant, Depends
-from .concurrency import (
-    check_dependency_contextmanagers,
-    asynccontextmanager_error_message,
-    AsyncExitStack,
-    run_in_threadpool,
-)
 
 Scope = MutableMapping[str, Any]
+
 
 def is_coroutine_callable(call: Callable[..., Any]) -> bool:
     if inspect.isroutine(call):
@@ -50,6 +32,7 @@ def is_gen_callable(call: Callable[..., Any]) -> bool:
     call = getattr(call, "__call__", None)
     return inspect.isgeneratorfunction(call)
 
+
 """
 async def solve_generator(
     *, call: Callable[..., Any], stack: AsyncExitStack, sub_values: Dict[str, Any]
@@ -68,6 +51,7 @@ async def solve_generator(
         cm = asynccontextmanager(call)(**sub_values)
     return await stack.enter_async_context(cm)
 """
+
 
 def get_typed_annotation(param: inspect.Parameter, globalns: Dict[str, Any]) -> Any:
     annotation = param.annotation
@@ -94,7 +78,8 @@ def get_typed_signature(call: Callable[..., Any]) -> inspect.Signature:
 
 
 def get_param_sub_dependant(
-    *, param: inspect.Parameter,
+    *,
+    param: inspect.Parameter,
 ) -> Dependant:
     depends: Depends = param.default
     if depends.dependency:
@@ -132,14 +117,26 @@ async def solve_dependencies(
     *,
     dependant: Dependant,
     dependency_overrides_provider: Optional[Any] = None,
-    dependency_cache: Optional[Dict[Tuple[Callable[..., Any],], Any]] = None,
+    dependency_cache: Optional[
+        Dict[
+            Tuple[
+                Callable[..., Any],
+            ],
+            Any,
+        ]
+    ] = None,
     scope: Optional[Scope] = None,
 ) -> Tuple[
     Dict[str, Any],
     List[ErrorWrapper],
     Optional[Any],
     Any,
-    Dict[Tuple[Callable[..., Any], ], Any],
+    Dict[
+        Tuple[
+            Callable[..., Any],
+        ],
+        Any,
+    ],
 ]:
     values: Dict[str, Any] = {}
     errors: List[ErrorWrapper] = []
@@ -149,7 +146,7 @@ async def solve_dependencies(
     for sub_dependant in dependant.dependencies:
         sub_dependant.call = cast(Callable[..., Any], sub_dependant.call)
         sub_dependant.cache_key = cast(
-            Tuple[Callable[..., Any] ], sub_dependant.cache_key
+            Tuple[Callable[..., Any]], sub_dependant.cache_key
         )
         call = sub_dependant.call
         use_sub_dependant = sub_dependant

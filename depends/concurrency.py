@@ -1,4 +1,4 @@
-from typing import Callable, Any, AsyncGenerator, Iterator, Tuple, TypeVar, Dict
+from typing import Any, AsyncGenerator, Callable, Iterator, TypeVar
 
 asynccontextmanager_error_message = """
 dependencies with yield require Python 3.7 or above,
@@ -51,9 +51,9 @@ except ImportError:  # pragma: no cover
     contextvars = None  # type: ignore
 
 if sys.version_info >= (3, 7):  # pragma: no cover
-    from asyncio import create_task
+    pass
 else:  # pragma: no cover
-    from asyncio import ensure_future as create_task
+    pass
 
 T = TypeVar("T")
 
@@ -65,9 +65,8 @@ async def run_until_first_complete(*args: Tuple[Callable[..., Any], Dict[Any]]) 
     [task.result() for task in done]
 """
 
-async def run_in_threadpool(
-    func: Callable[..., T], *args: Any, **kwargs: Any
-) -> T:
+
+async def run_in_threadpool(func: Callable[..., T], *args: Any, **kwargs: Any) -> T:
     loop = asyncio.get_event_loop()
     if contextvars is not None:  # pragma: no cover
         # Ensure we run in the same context

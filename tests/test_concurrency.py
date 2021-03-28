@@ -1,16 +1,13 @@
-import pytest
-
 import asyncio
-from typing import Callable, Any, Sequence
+from typing import Any, Callable, Sequence
+
+import pytest
 
 from depends.concurrency import run_in_threadpool
 
 
-
 class BackgroundTask:
-    def __init__(
-        self, func: Callable[..., Any], *args: Any, **kwargs: Any
-    ) -> None:
+    def __init__(self, func: Callable[..., Any], *args: Any, **kwargs: Any) -> None:
         self.func = func
         self.args = args
         self.kwargs = kwargs
@@ -27,9 +24,7 @@ class BackgroundTasks(BackgroundTask):
     def __init__(self, tasks: Sequence[BackgroundTask] = []):
         self.tasks = list(tasks)
 
-    def add_task(
-        self, func: Callable[..., Any], *args: Any, **kwargs: Any
-    ) -> None:
+    def add_task(self, func: Callable[..., Any], *args: Any, **kwargs: Any) -> None:
         task = BackgroundTask(func, *args, **kwargs)
         self.tasks.append(task)
 
@@ -37,13 +32,12 @@ class BackgroundTasks(BackgroundTask):
         for task in self.tasks:
             await task()
 
+
 class TestBackgroundTask:
     @pytest.mark.asyncio
     async def test_ok(self) -> None:
         def foo() -> str:
-            return 'foo'
+            return "foo"
 
         task = BackgroundTask(foo)
         await task()
-
-
