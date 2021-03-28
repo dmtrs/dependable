@@ -26,7 +26,7 @@ except ImportError:
 
 
 try:
-    from contextlib import AsyncExitStack as AsyncExitStack # type: ignore
+    from contextlib import AsyncExitStack as AsyncExitStack  # type: ignore
 except ImportError:
     try:
         from async_exit_stack import AsyncExitStack as AsyncExitStack  # type: ignore
