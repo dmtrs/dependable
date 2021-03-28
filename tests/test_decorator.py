@@ -1,11 +1,11 @@
-from typing import Any, TypeVar, Generic
+from typing import Any, TypeVar
 
-from depends import dependable, Depends
+from depends import Depends, dependable
 
-T = TypeVar('T')
+T = TypeVar("T")
+
 
 class TestDependable:
-
     def test_empty(self) -> None:
         @dependable
         def empty() -> Any:
