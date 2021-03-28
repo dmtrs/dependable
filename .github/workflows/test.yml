@@ -28,6 +28,9 @@ jobs:
         run: pip install poetry
       - name: Install dependencies
         run: poetry install
+      - name: Backport 3.6
+        if: ${{ matrix.python-version == 3.6 }}
+        run: poetry add async-exit-stack async-generator
       - name: Code quality
         run: poetry run pre-commit run --all
       - name: Run tests
