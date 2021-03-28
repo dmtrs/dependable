@@ -126,23 +126,12 @@ async def solve_dependencies(
         ]
     ] = None,
     scope: Optional[Scope] = None,
-) -> Tuple[
-    Dict[str, Any],
-    List[ErrorWrapper],
-    Optional[Any],
-    Any,
-    Dict[
-        Tuple[
-            Callable[..., Any],
-        ],
-        Any,
-    ],
-]:
+) -> Tuple[Dict[str, Any], List[ErrorWrapper], Dict[Tuple[Callable[..., Any],], Any,],]:
     values: Dict[str, Any] = {}
     errors: List[ErrorWrapper] = []
     dependency_cache = dependency_cache or {}
     sub_dependant: Dependant
-    print(dependant.dependencies)
+
     for sub_dependant in dependant.dependencies:
         sub_dependant.call = cast(Callable[..., Any], sub_dependant.call)
         sub_dependant.cache_key = cast(
@@ -171,8 +160,6 @@ async def solve_dependencies(
         (
             sub_values,
             sub_errors,
-            background_tasks,
-            _,  # the subdependency returns the same response we have
             sub_dependency_cache,
         ) = solved_result
         dependency_cache.update(sub_dependency_cache)
@@ -203,4 +190,4 @@ async def solve_dependencies(
             )
         """
 
-    return values, errors, background_tasks, _, dependency_cache
+    return values, errors, dependency_cache

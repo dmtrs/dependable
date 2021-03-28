@@ -11,7 +11,7 @@ class dependable:
         self.call = call
         self.dependant = get_dependant(call=call)
 
-    def __call__(self, *args: Any, **kwargs: Any) -> T:
+    async def __call__(self, *args: Any, **kwargs: Any) -> T:
         """
         async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
             if self.root_path:
@@ -23,5 +23,5 @@ class dependable:
             else:
                 await super().__call__(scope, receive, send)  # pragma: no cover
         """
-        results = solve_dependencies(dependant=self.dependant)
+        results = await solve_dependencies(dependant=self.dependant)
         return self.call(*args, **kwargs)
