@@ -33,6 +33,6 @@ jobs:
       - name: Code quality
         run: poetry run pre-commit run --all
       - name: Run tests
-        run: poetry run pytest --mypy tests/ --cov=depends --cov-report=term-missing:skip-covered --cov-report=xml
+        run: poetry run pytest --mypy tests/ --cov=dependable --cov-report=term-missing:skip-covered --cov-report=xml
       - name: Upload coverage
         uses: codecov/codecov-action@v1

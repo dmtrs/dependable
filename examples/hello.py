@@ -1,10 +1,10 @@
 import asyncio
 from random import random
 
-from depends import Depends, dependable
+from dependable import Depends, dependant
 
 
-@dependable
+@dependant
 async def main(*, choice: int = Depends(random)) -> None:
     print(choice)
 

@@ -3,7 +3,7 @@ from typing import Any, Callable, Sequence
 
 import pytest
 
-from depends.concurrency import run_in_threadpool
+from dependable.concurrency import run_in_threadpool
 
 
 class BackgroundTask:

@@ -1,4 +1,4 @@
-from depends import Depends
+from dependable import Depends
 
 
 class TestDepends:

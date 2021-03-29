@@ -4,10 +4,10 @@ help: ## Show this help
 
 .PHONY: lint
 lint:  ## Linter the code.
-	isort depends tests --check
+	isort dependable tests --check
 	flake8 .
-	mypy depends
+	mypy dependable
 
 .PHONY: test
 test:  ## Test your code.
-	poetry run pytest tests/ --cov=depends --cov-report=term-missing:skip-covered --cov-report=xml
+	poetry run pytest tests/ --cov=dependable --cov-report=term-missing:skip-covered --cov-report=xml

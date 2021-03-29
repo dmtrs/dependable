@@ -1,12 +1,12 @@
 [tool.poetry]
-name = "depends"
+name = "dependable"
 version = "0.1.0"
 description = "Dependency injection system extracted from FastAPI"
 authors = ["Dimitrios Flaco Mengidis  <tydeas.dr@gmail.com>"]
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/dmtrs/depends"
-include = ["depends/py.typed"]
+repository = "https://github.com/dmtrs/dependable"
+include = ["dependable/py.typed"]
 
 classifiers = [
     "Topic :: Software Development :: Build Tools",

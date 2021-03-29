@@ -3,7 +3,7 @@ import time
 import uuid
 from typing import Tuple
 
-from depends import Depends, dependable
+from dependable import Depends, dependant
 
 
 def get_id() -> uuid.UUID:
@@ -20,7 +20,7 @@ def cpu_bound() -> None:
     return time.time()
 
 
-@dependable
+@dependant
 async def tick(
     *,
     i: int,

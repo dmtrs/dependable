@@ -1,5 +1,5 @@
-import depends
+import dependable
 
 
 def test_version() -> None:
-    assert depends.__version__ == "0.1.0"
+    assert dependable.__version__ == "0.1.0"
