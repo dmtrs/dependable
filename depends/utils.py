@@ -1,5 +1,5 @@
 import inspect
-from typing import Any, Callable, Dict, List, MutableMapping, Optional, Tuple, cast
+from typing import Any, Callable, Dict, List, MutableMapping, Optional, Tuple
 
 from pydantic.error_wrappers import ErrorWrapper
 from pydantic.typing import ForwardRef, evaluate_forwardref
@@ -133,10 +133,10 @@ async def solve_dependencies(
     sub_dependant: Dependant
 
     for sub_dependant in dependant.dependencies:
-        sub_dependant.call = cast(Callable[..., Any], sub_dependant.call)
-        sub_dependant.cache_key = cast(
-            Tuple[Callable[..., Any]], sub_dependant.cache_key
-        )
+        # sub_dependant.call = cast(Callable[..., Any], sub_dependant.call)
+        # sub_dependant.cache_key = cast(
+        #     Tuple[Callable[..., Any]], sub_dependant.cache_key
+        # )
         call = sub_dependant.call
         use_sub_dependant = sub_dependant
         if (

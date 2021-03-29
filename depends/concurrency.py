@@ -1,4 +1,6 @@
-from typing import Any, AsyncGenerator, Callable, Iterator, TypeVar
+from typing import Any, AsyncGenerator, Callable, Dict, Iterator, TypeVar
+
+from .core import Dependant
 
 asynccontextmanager_error_message = """
 dependencies with yield require Python 3.7 or above,
@@ -100,3 +102,16 @@ async def iterate_in_threadpool(iterator: Iterator[T]) -> AsyncGenerator[T, None
             yield await run_in_threadpool(_next, iterator)
         except _StopIteration:
             break
+
+
+async def run_function(
+    *, dependant: Dependant, values: Dict[str, Any], is_coroutine: bool
+) -> Any:
+    # Only called by get_request_handler. Has been split into its own function to
+    # facilitate profiling endpoints, since inner functions are harder to profile.
+    assert dependant.call is not None, "dependant.call must be a function"
+
+    if is_coroutine:
+        return await dependant.call(**values)
+    else:
+        return await run_in_threadpool(dependant.call, **values)

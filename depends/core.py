@@ -1,4 +1,6 @@
-from typing import Any, Callable, List, Optional
+from typing import Any, Callable, List, Optional, TypeVar
+
+T = TypeVar("T")
 
 
 class Depends:
@@ -20,7 +22,7 @@ class Dependant:
         *,
         dependencies: Optional[List["Dependant"]] = None,
         name: Optional[str] = None,
-        call: Optional[Callable[..., Any]] = None,
+        call: Callable[..., Any],
         # request_param_name: Optional[str] = None,
         # websocket_param_name: Optional[str] = None,
         # http_connection_param_name: Optional[str] = None,

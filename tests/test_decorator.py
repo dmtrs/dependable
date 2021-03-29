@@ -25,10 +25,10 @@ class TestAsyncDependable:
     @pytest.mark.asyncio
     async def test_arg(self) -> None:
         @dependable
-        def _is(b: bool) -> bool:
+        def _is(*, b: bool) -> bool:
             return b
 
-        assert await _is(True)
+        assert await _is(b=True)
 
     @pytest.mark.asyncio
     async def test_depends(self) -> None:
@@ -36,9 +36,9 @@ class TestAsyncDependable:
             return False
 
         @dependable
-        def _is(actual: bool = Depends(falsy)) -> bool:
+        def _is(*, actual: bool = Depends(falsy)) -> bool:
             return actual
 
-        assert await _is(True)
-        assert not await _is(False)
-        # assert not await _is()
+        assert await _is(actual=True)
+        assert not await _is(actual=False)
+        assert not await _is()
