@@ -2,21 +2,21 @@ from typing import Any, TypeVar
 
 import pytest
 
-from depends import Depends, dependable
+from dependable import Depends, dependant
 
 T = TypeVar("T")
 
 
-class TestAsyncDependable:
+class TestDependant:
     def test_assertion(self) -> None:
         try:
-            dependable(1)  # type: ignore
+            dependant(1)  # type: ignore
         except AssertionError:
             assert True
 
     @pytest.mark.asyncio
     async def test_empty(self) -> None:
-        @dependable
+        @dependant
         def empty() -> Any:
             return True
 
@@ -24,7 +24,7 @@ class TestAsyncDependable:
 
     @pytest.mark.asyncio
     async def test_arg(self) -> None:
-        @dependable
+        @dependant
         def _is(*, b: bool) -> bool:
             return b
 
@@ -35,7 +35,7 @@ class TestAsyncDependable:
         def falsy() -> bool:
             return False
 
-        @dependable
+        @dependant
         def _is(*, actual: bool = Depends(falsy)) -> bool:
             return actual
 

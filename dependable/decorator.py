@@ -8,7 +8,7 @@ from .utils import get_dependant, solve_dependencies
 T = TypeVar("T")
 
 
-class dependable:
+class dependant:
     def __init__(self, call: Callable[..., Any]) -> None:
         assert callable(call)
         self.call = call

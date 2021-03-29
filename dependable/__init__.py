@@ -5,7 +5,7 @@ __version__ = "0.1.0"
 from typing import Any, Callable, Optional
 
 from .core import Depends as InternalDepends
-from .decorator import dependable as dependable
+from .decorator import dependant as dependant
 
 
 def Depends(  # noqa: N802
