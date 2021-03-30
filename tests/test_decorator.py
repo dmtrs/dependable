@@ -1,4 +1,12 @@
-from typing import Any, TypeVar
+from typing import (
+    Any,
+    AsyncGenerator,
+    AsyncIterator,
+    Generator,
+    Iterator,
+    List,
+    TypeVar,
+)
 
 import pytest
 
@@ -42,3 +50,38 @@ class TestDependant:
         assert await _is(actual=True)
         assert not await _is(actual=False)
         assert not await _is()
+
+    @pytest.mark.asyncio
+    async def test_generator(self) -> None:
+        expected = ["hello", "world"]
+
+        def gen() -> Generator[str, None, None]:
+            for f in expected:
+                yield f
+
+        @dependant
+        async def collect(words: Iterator[str] = Depends(gen)) -> List[str]:
+            actual = []
+            for w in words:
+                actual.append(w)
+            return actual
+
+        assert expected == await collect()
+
+    @pytest.mark.asyncio
+    async def test_async_generator(self) -> None:
+        expected = ["hello", "world"]
+
+        async def gen() -> AsyncGenerator[str, None]:
+            for f in expected:
+                print(f)
+                yield f
+
+        @dependant
+        async def collect(words: AsyncIterator[str] = Depends(gen)) -> List[str]:
+            actual = []
+            async for w in words:
+                actual.append(w)
+            return actual
+
+        assert expected == await collect()

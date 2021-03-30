@@ -1,4 +1,8 @@
-from typing import Any, AsyncGenerator, Callable, Dict, Iterator, TypeVar
+import asyncio
+import functools
+from typing import Any, Callable, Dict, TypeVar
+
+T = TypeVar("T")
 
 from .core import Dependant
 
@@ -8,28 +12,20 @@ or the backports for Python 3.6, installed with:
     pip install async-exit-stack async-generator
 """
 
-
-def _fake_asynccontextmanager(func: Callable[..., Any]) -> Callable[..., Any]:
-    def raiser(*args: Any, **kwargs: Any) -> Any:
-        raise RuntimeError(asynccontextmanager_error_message)
-
-    return raiser
-
-
 try:
     from contextlib import asynccontextmanager as asynccontextmanager  # type: ignore
-except ImportError:
+except ImportError:  # pragma: no cover
     try:
         from async_generator import (  # type: ignore  # isort: skip
             asynccontextmanager as asynccontextmanager,
         )
     except ImportError:  # pragma: no cover
-        asynccontextmanager = _fake_asynccontextmanager
+        asynccontextmanager = None  # type: ignore
 
 
 try:
     from contextlib import AsyncExitStack as AsyncExitStack  # type: ignore
-except ImportError:
+except ImportError:  # pragma: no cover
     try:
         from async_exit_stack import AsyncExitStack as AsyncExitStack  # type: ignore
     except ImportError:  # pragma: no cover
@@ -37,35 +33,16 @@ except ImportError:
 
 
 def check_dependency_contextmanagers() -> None:
-    if AsyncExitStack is None or asynccontextmanager == _fake_asynccontextmanager:
+    if AsyncExitStack is None or asynccontextmanager is None:
         raise RuntimeError(asynccontextmanager_error_message)  # pragma: no cover
 
 
 # starlette/concurrency.py
 
-import asyncio
-import functools
-import sys
-
 try:
     import contextvars  # Python 3.7+ only or via contextvars backport.
 except ImportError:  # pragma: no cover
     contextvars = None  # type: ignore
-
-if sys.version_info >= (3, 7):  # pragma: no cover
-    pass
-else:  # pragma: no cover
-    pass
-
-T = TypeVar("T")
-
-"""
-async def run_until_first_complete(*args: Tuple[Callable[..., Any], Dict[Any]]) -> None:
-    tasks = [create_task(handler(**kwargs)) for handler, kwargs in args]
-    (done, pending) = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
-    [task.cancel() for task in pending]
-    [task.result() for task in done]
-"""
 
 
 async def run_in_threadpool(func: Callable[..., T], *args: Any, **kwargs: Any) -> T:
@@ -84,24 +61,6 @@ async def run_in_threadpool(func: Callable[..., T], *args: Any, **kwargs: Any) -
 
 class _StopIteration(Exception):
     pass
-
-
-def _next(iterator: Iterator[T]) -> Any:
-    # We can't raise `StopIteration` from within the threadpool iterator
-    # and catch it outside that context, so we coerce them into a different
-    # exception type.
-    try:
-        return next(iterator)
-    except StopIteration:
-        raise _StopIteration
-
-
-async def iterate_in_threadpool(iterator: Iterator[T]) -> AsyncGenerator[T, None]:
-    while True:
-        try:
-            yield await run_in_threadpool(_next, iterator)
-        except _StopIteration:
-            break
 
 
 async def run_function(
