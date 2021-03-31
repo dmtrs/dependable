@@ -14,9 +14,9 @@ RUN ln -s /opt/poetry/bin/poetry /usr/local/bin/. \
 RUN useradd -ms /bin/bash user
 USER user
 
-RUN poetry config virtualenvs.create false
+# RUN poetry config virtualenvs.create false
 
 WORKDIR /usr/src/app/
 
-# COPY ./pyproject.toml  .
-# RUN poetry install --no-root # --no-dev
+COPY ./pyproject.toml  .
+RUN poetry install --no-root # --no-dev

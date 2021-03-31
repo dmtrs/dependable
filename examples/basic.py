@@ -1,21 +1,23 @@
 #!/bin/sh
-import time
-import uuid
-import yappi
-
 import asyncio
+import uuid
 from typing import Tuple
 
+import yappi
+
 from dependable import Depends, dependant
+
 
 async def some_service() -> uuid.UUID:
     await asyncio.sleep(1)
     return uuid.uuid4()
 
+
 async def main() -> Tuple[uuid.UUID, uuid.UUID]:
     _id: uuid.UUID = await some_service()
     other_id: uuid.UUID = await some_service()
     return (_id, other_id)
+
 
 @dependant
 async def main_with_depends(
@@ -24,6 +26,7 @@ async def main_with_depends(
     other_id: uuid.UUID = Depends(some_service),
 ) -> Tuple[uuid.UUID, uuid.UUID]:
     return (_id, other_id)
+
 
 yappi.set_clock_type("cpu")
 """
