@@ -1,9 +1,6 @@
 import inspect
 from typing import Any, Callable, Dict, List, MutableMapping, Optional, Tuple
 
-from pydantic.error_wrappers import ErrorWrapper
-from pydantic.typing import ForwardRef, evaluate_forwardref
-
 from .concurrency import check_dependency_contextmanagers, run_in_threadpool
 from .core import Dependant, Depends
 
@@ -53,14 +50,6 @@ async def solve_generator(
 """
 
 
-def get_typed_annotation(param: inspect.Parameter, globalns: Dict[str, Any]) -> Any:
-    annotation = param.annotation
-    if isinstance(annotation, str):
-        annotation = ForwardRef(annotation)
-        annotation = evaluate_forwardref(annotation, globalns, globalns)
-    return annotation
-
-
 def get_typed_signature(call: Callable[..., Any]) -> inspect.Signature:
     signature = inspect.signature(call)
     globalns = getattr(call, "__globals__", {})
@@ -69,7 +58,7 @@ def get_typed_signature(call: Callable[..., Any]) -> inspect.Signature:
             name=param.name,
             kind=param.kind,
             default=param.default,
-            annotation=get_typed_annotation(param, globalns),
+            annotation=param.annotation,
         )
         for param in signature.parameters.values()
     ]
@@ -126,9 +115,9 @@ async def solve_dependencies(
         ]
     ] = None,
     scope: Optional[Scope] = None,
-) -> Tuple[Dict[str, Any], List[ErrorWrapper], Dict[Tuple[Callable[..., Any],], Any,],]:
+) -> Tuple[Dict[str, Any], List[Exception], Dict[Tuple[Callable[..., Any],], Any,],]:
     values: Dict[str, Any] = {}
-    errors: List[ErrorWrapper] = []
+    errors: List[Exception] = []
     dependency_cache = dependency_cache or {}
     sub_dependant: Dependant
 
