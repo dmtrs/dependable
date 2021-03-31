@@ -1,0 +1,123 @@
+
+Clock type: CPU
+Ordered by: totaltime, desc
+
+name                                  ncall  tsub      ttot      tavg      
+..python3.9/asyncio/runners.py:8 run  5      0.000224  0.012687  0.002537
+..lectorEventLoop.run_until_complete  15     0.000335  0.008759  0.000584
+.._UnixSelectorEventLoop.run_forever  15     0.000456  0.007144  0.000476
+..5 _UnixSelectorEventLoop._run_once  40     0.001299  0.006156  0.000154
+..9/asyncio/events.py:78 Handle._run  40     0.000323  0.003385  0.000085
+..yncio/events.py:759 new_event_loop  5      0.000029  0.001831  0.000366
+..decorator.py:17 dependant.__call__  5      0.000113  0.001762  0.000352
+..aultEventLoopPolicy.new_event_loop  5      0.000025  0.001757  0.000351
+..53 _UnixSelectorEventLoop.__init__  5      0.000026  0.001732  0.000346
+..54 _UnixSelectorEventLoop.__init__  5      0.000114  0.001706  0.000341
+..le/utils.py:116 solve_dependencies  15/5   0.000238  0.001366  0.000091
+..py:57 _UnixSelectorEventLoop.close  5      0.000052  0.001120  0.000224
+..py:87 _UnixSelectorEventLoop.close  5      0.000100  0.001057  0.000211
+..ectors.py:452 EpollSelector.select  40     0.000367  0.001008  0.000025
+..asyncio/tasks.py:659 ensure_future  15     0.000101  0.000971  0.000065
+..xSelectorEventLoop._make_self_pipe  5      0.000084  0.000918  0.000184
+..6 _UnixSelectorEventLoop.call_soon  35     0.000306  0.000901  0.000026
+..r/src/app/basic.py:11 some_service  5      0.000085  0.000839  0.000168
+.._UnixSelectorEventLoop.create_task  15     0.000258  0.000838  0.000056
+..SelectorEventLoop._close_self_pipe  5      0.000101  0.000768  0.000154
+.._UnixSelectorEventLoop._add_reader  5      0.000075  0.000482  0.000096
+.. _UnixSelectorEventLoop._call_soon  35     0.000229  0.000474  0.000014
+..thon3.9/asyncio/tasks.py:636 sleep  5      0.000117  0.000461  0.000092
+..ixSelectorEventLoop._remove_reader  5      0.000082  0.000400  0.000080
+..86 _UnixSelectorEventLoop.__init__  5      0.000110  0.000389  0.000078
+..inspect.py:190 iscoroutinefunction  10     0.000033  0.000378  0.000038
+..io/runners.py:55 _cancel_all_tasks  5      0.000033  0.000370  0.000074
+..n3.9/inspect.py:172 _has_code_flag  10     0.000158  0.000346  0.000035
+..n3.9/asyncio/tasks.py:41 all_tasks  5      0.000090  0.000337  0.000067
+..ents.py:184 _run_until_complete_cb  15     0.000185  0.000335  0.000022
+..python3.9/socket.py:593 socketpair  5      0.000163  0.000325  0.000065
+..yncio/events.py:31 Handle.__init__  45     0.000232  0.000300  0.000007
+..al/lib/python3.9/uuid.py:713 uuid4  5      0.000085  0.000293  0.000059
+../utils.py:13 is_coroutine_callable  5      0.000042  0.000272  0.000054
+..ctors.py:181 EpollSelector.get_key  10     0.000078  0.000270  0.000027
+..y:308 _set_result_unless_cancelled  5      0.000047  0.000261  0.000052
+..thon3.9/socket.py:497 socket.close  10     0.000042  0.000258  0.000026
+..yncio/events.py:754 set_event_loop  10     0.000129  0.000255  0.000025
+..outines.py:164 iscoroutinefunction  5      0.000023  0.000232  0.000046
+..py:689 _UnixSelectorEventLoop.time  50     0.000147  0.000224  0.000004
+..9/socket.py:493 socket._real_close  10     0.000058  0.000216  0.000022
+..ixSelectorEventLoop._check_running  30     0.000139  0.000213  0.000007
+.. _UnixSelectorEventLoop.call_later  5      0.000045  0.000203  0.000041
+..tors.py:352 EpollSelector.register  5      0.000046  0.000190  0.000038
+..nixSelectorEventLoop._check_closed  90     0.000183  0.000183  0.000002
+..io/coroutines.py:18 _is_debug_mode  5      0.000050  0.000179  0.000036
+..rs.py:366 EpollSelector.unregister  5      0.000047  0.000172  0.000034
+.._weakrefset.py:59 WeakSet.__iter__  5      0.000073  0.000171  0.000034
+..py:70 _SelectorMapping.__getitem__  10     0.000071  0.000170  0.000017
+..ython3.9/uuid.py:138 UUID.__init__  5      0.000118  0.000161  0.000032
+..720 _UnixSelectorEventLoop.call_at  5      0.000056  0.000140  0.000028
+..:216 EpollSelector._fileobj_lookup  20     0.000059  0.000139  0.000007
+..ollections_abc.py:759 _Environ.get  5      0.000033  0.000129  0.000026
+..y:105 WeakValueDictionary.__init__  5      0.000047  0.000111  0.000022
+..tors.py:348 EpollSelector.__init__  5      0.000077  0.000110  0.000022
+..aultEventLoopPolicy.set_event_loop  10     0.000058  0.000109  0.000011
+..tors.py:235 EpollSelector.register  5      0.000051  0.000107  0.000021
+..9/functools.py:420 _unwrap_partial  10     0.000095  0.000106  0.000011
+..679 _UnixSelectorEventLoop.__del__  5      0.000092  0.000105  0.000021
+..lectors.py:484 EpollSelector.close  5      0.000038  0.000105  0.000021
+..syncio/base_futures.py:14 isfuture  15     0.000050  0.000104  0.000007
+..ython3.9/_weakrefset.py:39 _remove  15     0.000077  0.000100  0.000007
+../_weakrefset.py:68 WeakSet.__len__  15     0.000065  0.000099  0.000007
+..o/events.py:148 TimerHandle.cancel  5      0.000061  0.000098  0.000020
+..3.9/os.py:674 _Environ.__getitem__  5      0.000048  0.000096  0.000019
+..oop._set_coroutine_origin_tracking  30     0.000089  0.000089  0.000003
+..8 _UnixSelectorEventLoop.get_debug  75     0.000088  0.000088  0.000001
+..3.9/selectors.py:21 _fileobj_to_fd  20     0.000057  0.000080  0.000004
+..n3.9/_weakrefset.py:82 WeakSet.add  15     0.000059  0.000080  0.000005
+..lectorEventLoop.shutdown_asyncgens  5      0.000021  0.000073  0.000015
+..y:652 _UnixSelectorEventLoop.close  5      0.000052  0.000072  0.000014
+..ventLoop.shutdown_default_executor  5      0.000071  0.000071  0.000014
+..rs.py:248 EpollSelector.unregister  5      0.000031  0.000070  0.000014
+..events.py:103 TimerHandle.__init__  5      0.000026  0.000069  0.000014
+..9/asyncio/futures.py:296 _get_loop  15     0.000048  0.000065  0.000004
+..ging/__init__.py:1420 Logger.debug  5      0.000023  0.000064  0.000013
+...py:287 WeakValueDictionary.update  5      0.000047  0.000064  0.000013
+..n3.9/socket.py:220 socket.__init__  10     0.000062  0.000062  0.000006
+..vents.py:722 get_event_loop_policy  15     0.000024  0.000061  0.000004
+..python3.9/inspect.py:295 isroutine  5      0.000024  0.000060  0.000012
+..xSelectorEventLoop._process_events  40     0.000059  0.000059  0.000001
+..io/events.py:64 TimerHandle.cancel  10     0.000045  0.000057  0.000006
+.. _UnixSelectorEventLoop.is_running  45     0.000056  0.000056  0.000001
+..set.py:27 _IterationGuard.__exit__  5      0.000039  0.000055  0.000011
+..ncio/coroutines.py:177 iscoroutine  20     0.000051  0.000053  0.000003
+..ython3.9/inspect.py:159 isfunction  15     0.000037  0.000052  0.000003
+..aultEventLoopPolicy.set_event_loop  10     0.000045  0.000051  0.000005
+..cal/lib/python3.9/os.py:754 encode  5      0.000030  0.000048  0.000010
+..b/python3.9/inspect.py:81 ismethod  10     0.000030  0.000044  0.000004
+..le/concurrency.py:107 run_function  5      0.000036  0.000044  0.000009
+..init__.py:1685 Logger.isEnabledFor  5      0.000030  0.000042  0.000008
+..nts.py:714 _init_event_loop_policy  1      0.000017  0.000037  0.000037
+..lectors.py:269 EpollSelector.close  5      0.000027  0.000035  0.000007
+..nixSelectorEventLoop.create_future  5      0.000027  0.000033  0.000007
+..tors.py:210 EpollSelector.__init__  5      0.000024  0.000033  0.000007
+..et.py:21 _IterationGuard.__enter__  5      0.000020  0.000027  0.000005
+<string>:1 <lambda>                   5      0.000016  0.000027  0.000005
+..1 _UnixSelectorEventLoop.set_debug  5      0.000020  0.000026  0.000005
+..5 _UnixSelectorEventLoop.is_closed  15     0.000025  0.000025  0.000002
+.._weakrefset.py:37 WeakSet.__init__  5      0.000024  0.000024  0.000005
+..py:644 _UnixSelectorEventLoop.stop  15     0.000023  0.000023  0.000002
+..python3.9/inspect.py:286 isbuiltin  5      0.000014  0.000020  0.000004
+..set.py:17 _IterationGuard.__init__  5      0.000016  0.000016  0.000003
+..ctors.py:273 EpollSelector.get_map  10     0.000013  0.000013  0.000001
+..n3.9/asyncio/tasks.py:60 <setcomp>  5      0.000011  0.000011  0.000002
+..nixDefaultEventLoopPolicy.__init__  1      0.000005  0.000010  0.000010
+..set.py:53 WeakSet._commit_removals  5      0.000009  0.000009  0.000002
+..rs.py:64 _SelectorMapping.__init__  5      0.000009  0.000009  0.000002
+..rEventLoop._timer_handle_cancelled  5      0.000008  0.000008  0.000002
+../app/basic.py:20 main_with_depends  5      0.000008  0.000008  0.000002
+..._bootstrap>:1033 _handle_fromlist  1      0.000004  0.000005  0.000005
+..gging/__init__.py:214 _acquireLock  1      0.000004  0.000005  0.000005
+..nixDefaultEventLoopPolicy.__init__  1      0.000005  0.000005  0.000005
+..._bootstrap>:398 ModuleSpec.parent  1      0.000004  0.000004  0.000004
+..gging/__init__.py:223 _releaseLock  1      0.000003  0.000003  0.000003
+.._.py:1671 Logger.getEffectiveLevel  1      0.000003  0.000003  0.000003
+..g/__init__.py:1272 Manager.disable  1      0.000001  0.000001  0.000001
+.. _GeneratorContextManager.__exit__  1      0.000000  0.000000  0.000000
