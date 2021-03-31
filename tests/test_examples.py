@@ -1,4 +1,3 @@
-import asyncio
 from typing import Dict, Tuple
 
 import pytest
@@ -39,36 +38,52 @@ async def test_awaitable() -> None:
 
 @pytest.mark.asyncio
 async def test_boilerplate() -> None:
-    import time
     import uuid
 
     async def some_service() -> uuid.UUID:
-        await asyncio.sleep(1)
         return uuid.uuid4()
 
-    async def main() -> Tuple[uuid.UUID, uuid.UUID]:
-        _id: uuid.UUID = await some_service()
-        other_id: uuid.UUID = await some_service()
-        return (_id, other_id)
-
     @dependant
-    async def main_with_depends(
+    async def combine(
         *,
         _id: uuid.UUID = Depends(some_service),
-        other_id: uuid.UUID = Depends(some_service),
-    ) -> Tuple[uuid.UUID, uuid.UUID]:
-        return (_id, other_id)
+        other_id: uuid.UUID = Depends(some_service, use_cache=True),
+        oid: uuid.UUID = Depends(some_service),
+    ) -> Tuple[uuid.UUID, uuid.UUID, uuid.UUID]:
+        return (_id, other_id, oid)
 
-    pt = time.process_time()
-    t = time.time()
-    await main()
-    elapsed_pt = time.process_time() - pt
-    elapsed_t = time.time() - t
-    print(f"process: {elapsed_pt}, time: {elapsed_t}")
+    _id, other_id, oid = await combine()
+    assert _id is other_id is not oid
 
-    pt = time.process_time()
-    t = time.time()
-    await main_with_depends()
-    elapsed_pt = time.process_time() - pt
-    elapsed_t = time.time() - t
-    print(f"process: {elapsed_pt}, time: {elapsed_t}")
+
+@pytest.mark.asyncio
+async def test_class() -> None:
+    class F:
+        def __init__(self) -> None:
+            pass
+
+    class B:
+        def __init__(self, *, f: F = Depends(F)) -> None:
+            self.f = f
+
+    @dependant
+    async def f(*, f: F = Depends(F), b: B = Depends(B)) -> Tuple[F, B]:
+        return (f, b)
+
+    f, b = await f()
+    assert f is not b.f
+
+
+@pytest.mark.asyncio
+async def test_instance() -> None:
+    import uuid
+
+    class F:
+        async def __call__(self) -> uuid.UUID:
+            return uuid.uuid4()
+
+    @dependant
+    async def f(*, f: uuid.UUID = Depends(F())) -> uuid.UUID:
+        return f
+
+    assert await f() is not await f()

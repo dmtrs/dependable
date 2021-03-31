@@ -9,6 +9,6 @@ from .decorator import dependant as dependant
 
 
 def Depends(  # noqa: N802
-    dependency: Optional[Callable[..., Any]] = None, *, use_cache: bool = True
+    dependency: Optional[Callable[..., Any]] = None, *, use_cache: bool = False
 ) -> Any:
     return InternalDepends(dependency=dependency, use_cache=use_cache)
