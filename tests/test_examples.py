@@ -75,6 +75,22 @@ async def test_class() -> None:
 
 
 @pytest.mark.asyncio
+async def test_shortcut_syntax() -> None:
+    import uuid
+
+    class F:
+        def __init__(self) -> None:
+            self._id = uuid.uuid4()
+
+    @dependant
+    async def f(*, f: F = Depends()) -> F:
+        return f
+
+    actual = await f()
+    assert isinstance(actual._id, uuid.UUID)
+
+
+@pytest.mark.asyncio
 async def test_instance() -> None:
     import uuid
 
