@@ -62,8 +62,28 @@ async def test_class() -> None:
         def __init__(self) -> None:
             pass
 
+    class B:
+        def __init__(self, *, f: F = Depends(F)) -> None:
+            self.f = f
+
     @dependant
-    async def f(*, f: F = Depends(F)) -> F:
+    async def f(*, f: F = Depends(F), b: B = Depends(B)) -> Tuple[F, B]:
+        return (f, b)
+
+    f, b = await f()
+    assert f is not b.f
+
+
+@pytest.mark.asyncio
+async def test_instance() -> None:
+    import uuid
+
+    class F:
+        async def __call__(self) -> uuid.UUID:
+            return uuid.uuid4()
+
+    @dependant
+    async def f(*, f: uuid.UUID = Depends(F())) -> uuid.UUID:
         return f
 
     assert await f() is not await f()
