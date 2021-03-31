@@ -5,7 +5,10 @@ T = TypeVar("T")
 
 class Depends:
     def __init__(
-        self, dependency: Optional[Callable[..., Any]] = None, *, use_cache: bool = False
+        self,
+        dependency: Optional[Callable[..., Any]] = None,
+        *,
+        use_cache: bool = False,
     ):
         self.dependency = dependency
         self.use_cache = use_cache

@@ -1,4 +1,3 @@
-import asyncio
 from typing import Dict, Tuple
 
 import pytest
@@ -39,7 +38,6 @@ async def test_awaitable() -> None:
 
 @pytest.mark.asyncio
 async def test_boilerplate() -> None:
-    import time
     import uuid
 
     async def some_service() -> uuid.UUID:
@@ -56,6 +54,7 @@ async def test_boilerplate() -> None:
 
     _id, other_id, oid = await combine()
     assert _id is other_id is not oid
+
 
 @pytest.mark.asyncio
 async def test_class() -> None:
