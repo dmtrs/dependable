@@ -52,7 +52,7 @@ async def solve_generator(
 
 def get_typed_signature(call: Callable[..., Any]) -> inspect.Signature:
     signature = inspect.signature(call)
-    globalns = getattr(call, "__globals__", {})
+    getattr(call, "__globals__", {})
     typed_params = [
         inspect.Parameter(
             name=param.name,
