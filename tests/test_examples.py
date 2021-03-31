@@ -43,32 +43,28 @@ async def test_boilerplate() -> None:
     import uuid
 
     async def some_service() -> uuid.UUID:
-        await asyncio.sleep(1)
         return uuid.uuid4()
 
-    async def main() -> Tuple[uuid.UUID, uuid.UUID]:
-        _id: uuid.UUID = await some_service()
-        other_id: uuid.UUID = await some_service()
-        return (_id, other_id)
-
     @dependant
-    async def main_with_depends(
+    async def combine(
         *,
         _id: uuid.UUID = Depends(some_service),
-        other_id: uuid.UUID = Depends(some_service),
-    ) -> Tuple[uuid.UUID, uuid.UUID]:
-        return (_id, other_id)
+        other_id: uuid.UUID = Depends(some_service, use_cache=True),
+        oid: uuid.UUID = Depends(some_service),
+    ) -> Tuple[uuid.UUID, uuid.UUID, uuid.UUID]:
+        return (_id, other_id, oid)
 
-    pt = time.process_time()
-    t = time.time()
-    await main()
-    elapsed_pt = time.process_time() - pt
-    elapsed_t = time.time() - t
-    print(f"process: {elapsed_pt}, time: {elapsed_t}")
+    _id, other_id, oid = await combine()
+    assert _id is other_id is not oid
 
-    pt = time.process_time()
-    t = time.time()
-    await main_with_depends()
-    elapsed_pt = time.process_time() - pt
-    elapsed_t = time.time() - t
-    print(f"process: {elapsed_pt}, time: {elapsed_t}")
+@pytest.mark.asyncio
+async def test_class() -> None:
+    class F:
+        def __init__(self) -> None:
+            pass
+
+    @dependant
+    async def f(*, f: F = Depends(F)) -> F:
+        return f
+
+    assert await f() is not await f()

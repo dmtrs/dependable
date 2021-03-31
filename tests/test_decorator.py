@@ -74,7 +74,6 @@ class TestDependant:
 
         async def gen() -> AsyncGenerator[str, None]:
             for f in expected:
-                print(f)
                 yield f
 
         @dependant
