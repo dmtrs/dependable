@@ -511,7 +511,7 @@ watchmedo = ["PyYAML (>=3.10)", "argh (>=0.24.1)"]
 name = "yappi"
 version = "1.3.2"
 description = "Yet Another Python Profiler"
-category = "main"
+category = "dev"
 optional = false
 python-versions = "*"
 
@@ -533,7 +533,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.1"
-content-hash = "8024fe6ddf166c600011239e57db5bf2ce4ae78867744a103c1f8a0150900614"
+content-hash = "2530e0f1e0338b6b70658d5f0729ac3a9cb3baaa10dc5b6ebd0d9c81b2c7434d"
 
 [metadata.files]
 appdirs = [
