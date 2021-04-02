@@ -4,4 +4,4 @@ set -e
 set -x
 which poetry
 poetry run pre-commit run --all
-poetry run ptw -- -s -vv --mypy tests/ --cov=dependable --cov-report=term-missing:skip-covered --cov-report=html
+poetry run ptw -- -s -vv --mypy tests/ --cov=dependable --cov-report=term-missing:skip-covered
