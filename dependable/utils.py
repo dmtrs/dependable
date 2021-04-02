@@ -122,12 +122,9 @@ async def solve_dependencies(
     sub_dependant: Dependant
 
     for sub_dependant in dependant.dependencies:
-        # sub_dependant.call = cast(Callable[..., Any], sub_dependant.call)
-        # sub_dependant.cache_key = cast(
-        #     Tuple[Callable[..., Any]], sub_dependant.cache_key
-        # )
         call = sub_dependant.call
         use_sub_dependant = sub_dependant
+        """
         if (
             dependency_overrides_provider
             and dependency_overrides_provider.dependency_overrides
@@ -140,7 +137,7 @@ async def solve_dependencies(
                 call=call,
                 name=sub_dependant.name,
             )
-
+        """
         solved_result = await solve_dependencies(
             dependant=use_sub_dependant,
             dependency_overrides_provider=dependency_overrides_provider,

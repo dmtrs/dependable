@@ -103,3 +103,24 @@ async def test_instance() -> None:
         return f
 
     assert await f() is not await f()
+
+
+@pytest.mark.asyncio
+async def test_nested() -> None:
+    from random import random as _random
+
+    @dependant
+    async def random6() -> int:
+        return int(_random() * 6)
+
+    @dependant
+    async def random12() -> int:
+        return int(_random() * 12)
+
+    @dependant
+    async def dice(
+        a: int = Depends(random6), b: int = Depends(random12)
+    ) -> Tuple[int, int]:
+        return (a, b)
+
+    assert await dice() is not await dice()
