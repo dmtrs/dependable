@@ -1,12 +1,5 @@
-from typing import (
-    Any,
-    AsyncGenerator,
-    AsyncIterator,
-    Generator,
-    Iterator,
-    List,
-    TypeVar,
-)
+from dataclasses import dataclass
+from typing import AsyncGenerator, AsyncIterator, Generator, Iterator, List, TypeVar
 
 import pytest
 
@@ -14,42 +7,86 @@ from dependable import Depends, dependant
 
 T = TypeVar("T")
 
+dot = lambda: "."
 
-class TestDependant:
-    def test_assertion(self) -> None:
-        try:
-            dependant(1)  # type: ignore
-        except AssertionError:
-            assert True
+
+def char(c: str = Depends(dot)) -> str:
+    return c
+
+
+class TestDecoratorDependant:
+    @pytest.mark.asyncio
+    async def test_in_threadpool(self) -> None:
+        dot = dependant(char)
+        assert await dot() == "."
 
     @pytest.mark.asyncio
-    async def test_empty(self) -> None:
-        @dependant
-        def empty() -> Any:
-            return True
+    async def test_coroutine(self) -> None:
+        async def async_char(c: str = Depends(char)) -> str:
+            return c
 
-        assert await empty()
-
-    @pytest.mark.asyncio
-    async def test_arg(self) -> None:
-        @dependant
-        def _is(*, b: bool) -> bool:
-            return b
-
-        assert await _is(b=True)
+        dot = dependant(async_char)
+        assert await dot() == "."
 
     @pytest.mark.asyncio
-    async def test_depends(self) -> None:
-        def falsy() -> bool:
-            return False
+    async def test_str_annotation(self) -> None:
+        @dataclass
+        class C:
+            value = "."
+
+        async def async_char(c: C = Depends()) -> str:
+            return c.value
+
+        dot = dependant(async_char)
+        assert await dot() == "."
+
+    @pytest.mark.asyncio
+    async def test_override(self) -> None:
+        overrides = {dot: lambda: "x"}
+        dash = dependant(char, overrides=overrides)
+
+        assert await dash() == "x"
+
+    @pytest.mark.asyncio
+    async def test_ok(self) -> None:
+        async def async_char(c: str = Depends(char)) -> str:
+            raise Exception
+
+        dot = dependant(async_char)
+
+        with pytest.raises(Exception):
+            assert await dot() == "."
+
+    @pytest.mark.asyncio
+    async def test_use_cache(self) -> None:
+        # arrange
+        from random import random as _random
+
+        random = dependant(_random)
+
+        # act / assert
+        assert await random() is not await random()
+
+        # arrange
+        def single_cached(r: float = Depends(_random, use_cache=True)) -> float:
+            return r
+
+        still_random = dependant(single_cached)
+
+        # act / assert
+        assert await still_random() is not await still_random()
+
+        # arrange
 
         @dependant
-        def _is(*, actual: bool = Depends(falsy)) -> bool:
-            return actual
+        def cached(
+            r: float = Depends(_random), x: float = Depends(_random, use_cache=True)
+        ) -> float:
+            return r is x
 
-        assert await _is(actual=True)
-        assert not await _is(actual=False)
-        assert not await _is()
+
+        # act / assert
+        assert await cached()
 
     @pytest.mark.asyncio
     async def test_generator(self) -> None:
@@ -84,3 +121,15 @@ class TestDependant:
             return actual
 
         assert expected == await collect()
+
+    @pytest.mark.asyncio
+    async def test_callable_class(self) -> None:
+        class C:
+            async def __call__(self) -> float:
+                return 1.0
+
+        async def foo(c: float = Depends(C())) -> float:
+            return c
+
+        awaitable_foo = dependant(foo)
+        assert await awaitable_foo() == 1.0

@@ -105,7 +105,7 @@ def get_dependant(
 async def solve_dependencies(
     *,
     dependant: Dependant,
-    dependency_overrides_provider: Optional[Any] = None,
+    overrides: Optional[Any] = None,
     dependency_cache: Optional[
         Dict[
             Tuple[
@@ -124,23 +124,18 @@ async def solve_dependencies(
     for sub_dependant in dependant.dependencies:
         call = sub_dependant.call
         use_sub_dependant = sub_dependant
-        """
-        if (
-            dependency_overrides_provider
-            and dependency_overrides_provider.dependency_overrides
-        ):
+
+        if overrides:
             original_call = sub_dependant.call
-            call = getattr(
-                dependency_overrides_provider, "dependency_overrides", {}
-            ).get(original_call, original_call)
+            call = overrides.get(original_call, original_call)
             use_sub_dependant = get_dependant(
                 call=call,
                 name=sub_dependant.name,
             )
-        """
+
         solved_result = await solve_dependencies(
             dependant=use_sub_dependant,
-            dependency_overrides_provider=dependency_overrides_provider,
+            overrides=overrides,
             dependency_cache=dependency_cache,
         )
         (

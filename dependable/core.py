@@ -31,7 +31,7 @@ class Dependant:
         # http_connection_param_name: Optional[str] = None,
         # response_param_name: Optional[str] = None,
         # background_tasks_param_name: Optional[str] = None,
-        use_cache: bool = True,
+        use_cache: bool = False,
         # path: Optional[str] = None,
     ) -> None:
         self.dependencies = dependencies or []
