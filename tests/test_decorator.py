@@ -84,7 +84,6 @@ class TestDecoratorDependant:
         ) -> float:
             return r is x
 
-
         # act / assert
         assert await cached()
 
