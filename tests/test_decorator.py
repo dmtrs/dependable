@@ -60,7 +60,9 @@ class TestDecoratorDependant:
     @pytest.mark.asyncio
     async def test_use_cache(self) -> None:
         # arrange
-        from random import random as _random
+        from random import random as _rndm
+        def _random() -> float:
+            return _rndm()
 
         random = dependant(_random)
 
