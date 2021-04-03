@@ -1,5 +1,5 @@
 import asyncio
-from typing import Any, Callable, TypeVar
+from typing import Any, Callable, Dict, Optional, TypeVar
 
 from .concurrency import run_function
 from .core import Dependant
@@ -7,12 +7,27 @@ from .utils import get_dependant, solve_dependencies
 
 T = TypeVar("T")
 
+Call = Callable[..., Any]
+
 
 class dependant:
-    def __init__(self, call: Callable[..., Any]) -> None:
+    call: Callable[..., Any]
+    dependant: Dependant
+    overrides: Optional[Dict[Call, Call]] = None
+
+    def __new__(
+        cls,
+        call: Optional[Call],
+        *,
+        overrides: Optional[Dict[Call, Call]] = None,
+    ) -> Any:
         assert callable(call)
-        self.call = call
-        self.dependant: Dependant = get_dependant(call=call)
+        obj = super(dependant, cls).__new__(cls)
+        obj.call = call
+        obj.dependant = get_dependant(call=call)
+        if overrides:
+            obj.overrides = overrides
+        return obj
 
     async def __call__(self, *args: Any, **kwargs: Any) -> Any:
         is_coroutine: bool = asyncio.iscoroutinefunction(self.dependant.call)
@@ -28,7 +43,9 @@ class dependant:
                 await super().__call__(scope, receive, send)  # pragma: no cover
         """
         values, errors, dependency_cache = await solve_dependencies(
-            dependant=self.dependant
+            dependant=self.dependant,
+            overrides=self.overrides,
+            dependency_cache=None,
         )
 
         values.update(kwargs)

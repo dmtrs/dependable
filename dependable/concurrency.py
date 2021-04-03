@@ -33,8 +33,8 @@ except ImportError:  # pragma: no cover
 
 
 def check_dependency_contextmanagers() -> None:
-    if AsyncExitStack is None or asynccontextmanager is None:
-        raise RuntimeError(asynccontextmanager_error_message)  # pragma: no cover
+    if AsyncExitStack is None or asynccontextmanager is None:  # pragma: no cover
+        raise RuntimeError(asynccontextmanager_error_message)
 
 
 # starlette/concurrency.py
